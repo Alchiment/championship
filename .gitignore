@@ -141,3 +141,16 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# SDD files
+# Ignorar todo dentro de openspec EXCEPTO archive y spec
+openspec/*
+!openspec/config.yaml
+!openspec/changes/
+openspec/changes/*
+!openspec/changes/archive/
+!openspec/schemas/
+
+!openspec/spec/
+.atl
+nul
