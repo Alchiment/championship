@@ -185,6 +185,7 @@ artifacts:
     requires:
       - proposal
   - id: visuals
+    description: ASCII diagrams and impact assessment
     generates: visuals.md
     template: visuals.md
     instruction: |
