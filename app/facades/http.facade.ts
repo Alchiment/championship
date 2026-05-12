@@ -16,6 +16,8 @@ export class HttpFacade {
     });
 
     if (!response.ok) {
+      // For debug, delete later 
+      console.log(await response.json())
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
