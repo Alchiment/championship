@@ -1,5 +1,5 @@
-import { json } from "@remix-run/node";
-import type { ActionFunctionArgs } from "@remix-run/node";
+import { data } from "react-router";
+import type { ActionFunctionArgs } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { requireAdmin } from "../utils/auth.server";
 
@@ -10,7 +10,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     const teamId = params.id;
 
     const tournament = await prisma.tournament.findFirst();
-    if (!tournament) return json({ error: "No tournament" }, { status: 400 });
+    if (!tournament) return data({ error: "No tournament" }, { status: 400 });
 
     await prisma.team.update({
       where: { id: teamId },
@@ -37,8 +37,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
       });
     }
 
-    return json({ success: true });
+    return data({ success: true });
   }
 
-  return json({ error: "Method not allowed" }, { status: 405 });
+  return data({ error: "Method not allowed" }, { status: 405 });
 }

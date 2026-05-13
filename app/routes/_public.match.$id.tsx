@@ -1,6 +1,6 @@
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import { data } from "react-router";
+import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { NotFoundError } from "../errors/NotFoundError";
 
@@ -12,7 +12,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   if (!match) throw new NotFoundError("Match not found");
 
-  return json({
+  return data({
     match: {
       id: match.id,
       round: match.round,

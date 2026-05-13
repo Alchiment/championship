@@ -1,5 +1,5 @@
-import { json } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
+import { data } from "react-router";
+import { useLoaderData, Link } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 
 export async function loader() {
@@ -14,7 +14,7 @@ export async function loader() {
     COMPLETED: "text-muted",
   };
 
-  return json({
+  return data({
     tournament: tournament
       ? {
           id: tournament.id,

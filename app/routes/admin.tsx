@@ -1,11 +1,11 @@
-import { Link, Outlet, useLocation } from "@remix-run/react";
-import { json, redirect } from "@remix-run/node";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import { Link, Outlet, useLocation } from "react-router";
+import { data, redirect } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { requireAdmin } from "../utils/auth.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAdmin(request);
-  return json({});
+  return data({});
 }
 
 export default function AdminLayout() {

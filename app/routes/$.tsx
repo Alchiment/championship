@@ -1,8 +1,8 @@
-import { useLocation, Link } from "@remix-run/react";
-import { json } from "@remix-run/node";
+import { useLocation, Link } from "react-router";
+import { data } from "react-router";
 
 export async function loader() {
-  return json({}, { status: 404 });
+  return data({}, { status: 404 });
 }
 
 export default function NotFoundPage() {

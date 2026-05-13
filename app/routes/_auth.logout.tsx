@@ -1,5 +1,5 @@
-import { redirect } from "@remix-run/node";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { redirect } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { authService } from "../infrastructure/auth/auth.service";
 
 export async function loader({ request }: LoaderFunctionArgs) {

@@ -2,7 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "build",
   "installCommand": "npm install",
-  "framework": "remix",
+  "framework": "react-router",
   "env": {
     "DATABASE_URL": "@database_url",
     "DIRECT_URL": "@direct_url",

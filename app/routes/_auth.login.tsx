@@ -1,6 +1,6 @@
-import { Form, useActionData, useNavigation } from "@remix-run/react";
-import type { ActionFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { Form, useActionData, useNavigation } from "react-router";
+import type { ActionFunctionArgs } from "react-router";
+import { data } from "react-router";
 import { whatsAppService } from "../infrastructure/auth/whatsapp.service";
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -8,14 +8,14 @@ export async function action({ request }: ActionFunctionArgs) {
   const phoneNumber = formData.get("phoneNumber") as string;
 
   if (!phoneNumber || !/^\+?\d{7,15}$/.test(phoneNumber)) {
-    return json({ error: "Please enter a valid phone number" }, { status: 400 });
+    return data({ error: "Please enter a valid phone number" }, { status: 400 });
   }
 
   const code = whatsAppService.generateCode();
   whatsAppService.storeCode(phoneNumber, code);
   await whatsAppService.sendVerificationCode(phoneNumber, code);
 
-  return json({ success: true, phoneNumber });
+  return data({ success: true, phoneNumber });
 }
 
 export default function Login() {
@@ -23,7 +23,7 @@ export default function Login() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  if (actionData?.success) {
+  if (actionData && "success" in actionData && actionData.success) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-base">
         <div className="w-full max-w-md rounded-2xl border border-default bg-surface p-8">
@@ -80,7 +80,7 @@ export default function Login() {
               className="mt-1 block w-full rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
             />
           </div>
-          {actionData?.error && (
+          {actionData && "error" in actionData && (
             <p className="text-sm text-red-400">{actionData.error}</p>
           )}
           <button

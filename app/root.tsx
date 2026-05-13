@@ -6,8 +6,8 @@ import {
   ScrollRestoration,
   useRouteError,
   isRouteErrorResponse,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+} from "react-router";
+import type { LinksFunction } from "react-router";
 import styles from "./tailwind.css?url";
 
 export const links: LinksFunction = () => [

@@ -1,4 +1,4 @@
-import { json } from "@remix-run/node";
+import { data } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { CalculateStandings } from "../domain/use-cases/CalculateStandings";
 import { PrismaTeamRepository } from "../infrastructure/database/repositories/PrismaTeamRepository";
@@ -7,7 +7,7 @@ import { StandingAdapter } from "../adapters/standing.adapter";
 
 export async function loader() {
   const tournament = await prisma.tournament.findFirst();
-  if (!tournament) return json([]);
+  if (!tournament) return data([]);
 
   const teamRepo = new PrismaTeamRepository();
   const matchRepo = new PrismaMatchRepository();
@@ -16,5 +16,5 @@ export async function loader() {
   const standings = await calculateStandings.execute(tournament.id);
   const dtos = standings.map((s, i) => StandingAdapter.toDTO(s, i + 1));
 
-  return json(dtos);
+  return data(dtos);
 }

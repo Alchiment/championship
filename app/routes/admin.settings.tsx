@@ -1,6 +1,6 @@
-import { json, redirect } from "@remix-run/node";
-import { useLoaderData, Form, useNavigation } from "@remix-run/react";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { data, redirect } from "react-router";
+import { useLoaderData, Form, useNavigation } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { requireAdmin } from "../utils/auth.server";
 
@@ -9,7 +9,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const tournament = await prisma.tournament.findFirst({
     include: { organizers: true, sponsors: true },
   });
-  return json({ tournament });
+  return data({ tournament });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -17,7 +17,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const intent = formData.get("intent") as string;
   const tournament = await prisma.tournament.findFirst();
-  if (!tournament) return json({ error: "No tournament" }, { status: 400 });
+  if (!tournament) return data({ error: "No tournament" }, { status: 400 });
 
   if (intent === "settings") {
     await prisma.tournament.update({

@@ -1,6 +1,6 @@
-import { json, redirect } from "@remix-run/node";
-import { useLoaderData, Form, useNavigation } from "@remix-run/react";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { data, redirect } from "react-router";
+import { useLoaderData, Form, useNavigation } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { requireAdmin } from "../utils/auth.server";
 import { generateCode } from "../utils/country-codes";
@@ -8,7 +8,7 @@ import { generateCode } from "../utils/country-codes";
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAdmin(request);
   const tournament = await prisma.tournament.findFirst();
-  if (!tournament) return json({ teams: [] });
+  if (!tournament) return data({ teams: [] });
 
   const teams = await prisma.team.findMany({
     where: { tournamentId: tournament.id },
@@ -16,7 +16,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     orderBy: { name: "asc" },
   });
 
-  return json({
+  return data({
     teams: teams.map((t) => ({
       id: t.id,
       name: t.name,
@@ -43,7 +43,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const flag = formData.get("flag") as string;
     const code = generateCode(name);
     const tournament = await prisma.tournament.findFirst();
-    if (!tournament) return json({ error: "No tournament found" }, { status: 400 });
+    if (!tournament) return data({ error: "No tournament found" }, { status: 400 });
 
     await prisma.team.create({
       data: { name, code, flag, tournamentId: tournament.id },
