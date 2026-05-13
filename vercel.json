@@ -2,13 +2,5 @@
   "buildCommand": "npm run build",
   "outputDirectory": "build",
   "installCommand": "npm install",
-  "framework": "react-router",
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "DIRECT_URL": "@direct_url",
-    "SESSION_SECRET": "@session_secret",
-    "WHATSAPP_TOKEN": "@whatsapp_token",
-    "WHATSAPP_PHONE_NUMBER_ID": "@whatsapp_phone_number_id",
-    "ADMIN_PHONE": "@admin_phone"
-  }
+  "framework": "react-router"
 }
