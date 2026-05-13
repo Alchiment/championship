@@ -1,5 +1,5 @@
 import { getSession, commitSession, destroySession } from "../../utils/session.server";
-import type { Session } from "@remix-run/node";
+import type { Session } from "react-router";
 
 export interface AuthUser {
   phoneNumber: string;

@@ -1,13 +1,13 @@
-import { json, redirect } from "@remix-run/node";
-import { useLoaderData, Form, useNavigation } from "@remix-run/react";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { data, redirect } from "react-router";
+import { useLoaderData, Form, useNavigation } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { requireAdmin } from "../utils/auth.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAdmin(request);
   const tournament = await prisma.tournament.findFirst();
-  if (!tournament) return json({ rounds: [], tournamentId: "" });
+  if (!tournament) return data({ rounds: [], tournamentId: "" });
 
   const matches = await prisma.match.findMany({
     where: { tournamentId: tournament.id },
@@ -34,7 +34,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     })),
   }));
 
-  return json({ rounds, tournamentId: tournament.id });
+  return data({ rounds, tournamentId: tournament.id });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -50,7 +50,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const teamIds = teams.map((t) => t.id);
     if (teamIds.length < 2) {
-      return json({ error: "Need at least 2 teams" }, { status: 400 });
+      return data({ error: "Need at least 2 teams" }, { status: 400 });
     }
 
     if (teamIds.length % 2 !== 0) {

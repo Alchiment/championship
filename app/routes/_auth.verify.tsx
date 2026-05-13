@@ -1,6 +1,6 @@
-import { json, redirect } from "@remix-run/node";
-import type { ActionFunctionArgs } from "@remix-run/node";
-import { useActionData, Form } from "@remix-run/react";
+import { data, redirect } from "react-router";
+import type { ActionFunctionArgs } from "react-router";
+import { useActionData, Form } from "react-router";
 import { whatsAppService } from "../infrastructure/auth/whatsapp.service";
 import { authService } from "../infrastructure/auth/auth.service";
 import { prisma } from "../infrastructure/database/client";
@@ -11,12 +11,12 @@ export async function action({ request }: ActionFunctionArgs) {
   const code = formData.get("code") as string;
 
   if (!code || code.length !== 6) {
-    return json({ error: "Invalid verification code" }, { status: 400 });
+    return data({ error: "Invalid verification code" }, { status: 400 });
   }
 
   const valid = whatsAppService.validateCode(phoneNumber, code);
   if (!valid) {
-    return json({ error: "Invalid or expired code" }, { status: 400 });
+    return data({ error: "Invalid or expired code" }, { status: 400 });
   }
 
   const user = await prisma.user.findUnique({ where: { phoneNumber } });

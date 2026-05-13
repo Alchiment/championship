@@ -1,12 +1,12 @@
-import { json } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
+import { data } from "react-router";
+import { useLoaderData, Link } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { TeamCard } from "../components/ui/TeamCard";
 
 export async function loader() {
   const tournament = await prisma.tournament.findFirst();
   if (!tournament) {
-    return json({ teams: [] });
+    return data({ teams: [] });
   }
 
   const teams = await prisma.team.findMany({
@@ -17,7 +17,7 @@ export async function loader() {
     orderBy: { name: "asc" },
   });
 
-  return json({
+  return data({
     teams: teams.map((t) => ({
       id: t.id,
       name: t.name,

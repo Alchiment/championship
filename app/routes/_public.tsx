@@ -1,6 +1,6 @@
-import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react";
-import { json } from "@remix-run/node";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import { Link, Outlet, useLoaderData, useLocation } from "react-router";
+import { data } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { getAuthUser } from "../utils/auth.server";
 import { prisma } from "../infrastructure/database/client";
 import { BottomNav } from "../components/ui/BottomNav";
@@ -10,7 +10,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const tournament = await prisma.tournament.findFirst({
     include: { organizers: true, sponsors: true },
   });
-  return json({ user, tournament });
+  return data({ user, tournament });
 }
 
 export default function PublicLayout() {

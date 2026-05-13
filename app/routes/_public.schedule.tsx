@@ -1,12 +1,12 @@
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { data } from "react-router";
+import { useLoaderData } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { MatchCard } from "../components/ui/MatchCard";
 
 export async function loader() {
   const tournament = await prisma.tournament.findFirst();
   if (!tournament) {
-    return json({ rounds: [] });
+    return data({ rounds: [] });
   }
 
   const matches = await prisma.match.findMany({
@@ -37,7 +37,7 @@ export async function loader() {
     })),
   }));
 
-  return json({ rounds });
+  return data({ rounds });
 }
 
 export default function SchedulePage() {

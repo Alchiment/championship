@@ -1,5 +1,5 @@
-import { json } from "@remix-run/node";
-import type { ActionFunctionArgs } from "@remix-run/node";
+import { data } from "react-router";
+import type { ActionFunctionArgs } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { requireAdmin } from "../utils/auth.server";
 
@@ -16,8 +16,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
       include: { homeTeam: true, awayTeam: true },
     });
 
-    return json(match);
+    return data(match);
   }
 
-  return json({ error: "Method not allowed" }, { status: 405 });
+  return data({ error: "Method not allowed" }, { status: 405 });
 }

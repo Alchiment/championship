@@ -1,5 +1,5 @@
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { data } from "react-router";
+import { useLoaderData } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 import { CalculateStandings } from "../domain/use-cases/CalculateStandings";
 import { PrismaTeamRepository } from "../infrastructure/database/repositories/PrismaTeamRepository";
@@ -10,7 +10,7 @@ import { StandingsTable } from "../components/ui/StandingsTable";
 export async function loader() {
   const tournament = await prisma.tournament.findFirst();
   if (!tournament) {
-    return json({ standings: [], playoffCutoff: 0 });
+    return data({ standings: [], playoffCutoff: 0 });
   }
 
   const teamRepo = new PrismaTeamRepository();
@@ -20,7 +20,7 @@ export async function loader() {
   const standings = await calculateStandings.execute(tournament.id);
   const dtos = standings.map((s, i) => StandingAdapter.toDTO(s, i + 1));
 
-  return json({ standings: dtos, playoffCutoff: tournament.playoffCutoff });
+  return data({ standings: dtos, playoffCutoff: tournament.playoffCutoff });
 }
 
 export default function StandingsPage() {

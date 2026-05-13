@@ -1,5 +1,5 @@
-import { json } from "@remix-run/node";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import { data } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { prisma } from "../infrastructure/database/client";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -8,7 +8,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const round = url.searchParams.get("round") ? parseInt(url.searchParams.get("round")!) : undefined;
 
   const tournament = await prisma.tournament.findFirst();
-  if (!tournament) return json([]);
+  if (!tournament) return data([]);
 
   const where: any = { tournamentId: tournament.id };
   if (round !== undefined) where.round = round;
@@ -19,7 +19,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     orderBy: [{ round: "asc" }, { id: "asc" }],
   });
 
-  return json(
+  return data(
     matches.map((m) => ({
       id: m.id,
       round: m.round,
