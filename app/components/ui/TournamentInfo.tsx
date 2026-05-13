@@ -15,34 +15,35 @@ export function TournamentInfo({ name, venue, status, organizers, sponsors }: To
   };
 
   const statusColors: Record<string, string> = {
-    SETUP: "bg-yellow-100 text-yellow-700",
-    LEAGUE_PHASE: "bg-blue-100 text-blue-700",
-    PLAYOFFS: "bg-green-100 text-green-700",
-    COMPLETED: "bg-gray-100 text-gray-700",
+    SETUP: "text-amber-400",
+    LEAGUE_PHASE: "text-emerald-400",
+    PLAYOFFS: "text-emerald-300",
+    COMPLETED: "text-muted",
   };
 
   return (
     <div className="space-y-6">
-      <div className="rounded-lg bg-white p-6 shadow">
+      <div className="rounded-xl border border-default bg-surface p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-gray-800">{name}</h2>
-            <p className="text-gray-600">{venue}</p>
+            <h2 className="text-xl font-bold text-primary">{name}</h2>
+            <p className="text-secondary">{venue}</p>
           </div>
-          <span className={`rounded px-3 py-1 text-sm font-medium ${statusColors[status] || ""}`}>
+          <span className={`flex items-center gap-1.5 text-sm font-medium ${statusColors[status] || ""}`}>
+            <span className={`inline-block h-2 w-2 rounded-full ${statusColors[status] ? "bg-current" : ""}`} />
             {statusLabels[status] || status}
           </span>
         </div>
       </div>
 
       {organizers.length > 0 && (
-        <div className="rounded-lg bg-white p-6 shadow">
-          <h3 className="mb-3 text-lg font-semibold text-gray-700">Organizadores</h3>
+        <div className="rounded-xl border border-default bg-surface p-6">
+          <h3 className="mb-3 text-lg font-semibold text-secondary">Organizadores</h3>
           <div className="space-y-2">
             {organizers.map((org, i) => (
               <div key={i} className="flex items-center justify-between">
-                <span className="text-gray-800">{org.name}</span>
-                <span className="text-sm text-gray-500">{org.role}</span>
+                <span className="text-primary">{org.name}</span>
+                <span className="text-sm text-muted">{org.role}</span>
               </div>
             ))}
           </div>
@@ -50,14 +51,14 @@ export function TournamentInfo({ name, venue, status, organizers, sponsors }: To
       )}
 
       {sponsors.length > 0 && (
-        <div className="rounded-lg bg-white p-6 shadow">
-          <h3 className="mb-3 text-lg font-semibold text-gray-700">Patrocinadores</h3>
+        <div className="rounded-xl border border-default bg-surface p-6">
+          <h3 className="mb-3 text-lg font-semibold text-secondary">Patrocinadores</h3>
           <div className="space-y-2">
             {sponsors.map((sp, i) => (
               <div key={i}>
-                <span className="text-gray-800">{sp.name}</span>
+                <span className="text-primary">{sp.name}</span>
                 {sp.description && (
-                  <p className="text-sm text-gray-500">{sp.description}</p>
+                  <p className="text-sm text-muted">{sp.description}</p>
                 )}
               </div>
             ))}

@@ -16,7 +16,7 @@ export default function HomePage() {
   if (!tournament) {
     return (
       <div className="text-center">
-        <p className="text-gray-600">No hay torneo activo</p>
+        <p className="text-muted">No hay torneo activo</p>
       </div>
     );
   }

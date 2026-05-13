@@ -115,18 +115,18 @@ export default function AdminMatches() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-gray-800">Partidos</h1>
+      <h1 className="mb-6 text-2xl font-bold text-primary">Partidos</h1>
 
       {rounds.length === 0 && (
-        <div className="mb-8 rounded-lg bg-white p-6 shadow">
-          <h2 className="mb-4 text-lg font-semibold text-gray-700">Generar calendario</h2>
+        <div className="mb-8 rounded-xl border border-default bg-surface p-6">
+          <h2 className="mb-4 text-lg font-semibold text-primary">Generar calendario</h2>
           <Form method="post">
             <input type="hidden" name="intent" value="generate" />
             <input type="hidden" name="tournamentId" value={tournamentId} />
             <button
               type="submit"
               disabled={isSubmitting}
-              className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700 disabled:opacity-50"
+              className="rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600 disabled:opacity-50"
             >
               {isSubmitting ? "Generando..." : "Generar calendario e iniciar liga"}
             </button>
@@ -135,22 +135,22 @@ export default function AdminMatches() {
       )}
 
       {rounds.map((round) => (
-        <div key={round.round} className="mb-6 rounded-lg bg-white p-4 shadow">
-          <h3 className="mb-4 text-lg font-semibold text-gray-700">Jornada {round.round}</h3>
-          <div className="space-y-3">
+        <div key={round.round} className="mb-6 rounded-xl border border-default bg-surface p-5">
+          <h3 className="mb-4 text-lg font-semibold text-primary">Jornada {round.round}</h3>
+          <div className="divide-y divide-default">
             {round.matches.map((match) => (
-              <div key={match.id} className="flex items-center justify-between border-b pb-3">
-                <div className="flex items-center space-x-3">
+              <div key={match.id} className="flex items-center justify-between py-3">
+                <div className="flex items-center gap-3">
                   <span className="text-sm">{match.homeTeam.flag}</span>
-                  <span className="text-gray-800">{match.homeTeam.name}</span>
+                  <span className="text-primary">{match.homeTeam.name}</span>
                 </div>
 
                 {match.status === "COMPLETED" ? (
-                  <span className="font-bold text-gray-800">
+                  <span className="font-bold text-accent">
                     {match.homeScore} - {match.awayScore}
                   </span>
                 ) : (
-                  <Form method="post" className="flex items-center space-x-2">
+                  <Form method="post" className="flex items-center gap-2">
                     <input type="hidden" name="intent" value="record" />
                     <input type="hidden" name="matchId" value={match.id} />
                     <input
@@ -158,27 +158,27 @@ export default function AdminMatches() {
                       name="homeScore"
                       required
                       min="0"
-                      className="w-16 rounded border px-2 py-1 text-center"
+                      className="w-16 rounded-lg border border-default bg-inset px-2 py-1.5 text-center text-primary focus:border-accent focus:ring-1 focus:ring-accent/50"
                     />
-                    <span className="text-gray-500">-</span>
+                    <span className="text-muted">-</span>
                     <input
                       type="number"
                       name="awayScore"
                       required
                       min="0"
-                      className="w-16 rounded border px-2 py-1 text-center"
+                      className="w-16 rounded-lg border border-default bg-inset px-2 py-1.5 text-center text-primary focus:border-accent focus:ring-1 focus:ring-accent/50"
                     />
                     <button
                       type="submit"
-                      className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
+                      className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-slate-950 hover:bg-accent-600"
                     >
                       Guardar
                     </button>
                   </Form>
                 )}
 
-                <div className="flex items-center space-x-3">
-                  <span className="text-gray-800">{match.awayTeam.name}</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-primary">{match.awayTeam.name}</span>
                   <span className="text-sm">{match.awayTeam.flag}</span>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLocation } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { requireAdmin } from "../utils/auth.server";
@@ -9,32 +9,73 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function AdminLayout() {
+  const location = useLocation();
+
+  const navLinks = [
+    { to: "/admin", label: "Dashboard" },
+    { to: "/admin/matches", label: "Partidos" },
+    { to: "/admin/teams", label: "Equipos" },
+    { to: "/admin/settings", label: "Configuración" },
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-base">
       <div className="flex">
-        <aside className="w-64 bg-white shadow-md min-h-screen">
+        <aside className="hidden w-64 border-r border-default bg-surface md:block">
           <div className="p-4">
-            <Link to="/admin" className="text-xl font-bold text-gray-800">
+            <Link to="/admin" className="text-xl font-bold text-primary">
               Admin
             </Link>
           </div>
           <nav className="space-y-1 px-4">
-            <Link to="/admin" className="block rounded px-3 py-2 text-gray-700 hover:bg-gray-100">
-              Dashboard
-            </Link>
-            <Link to="/admin/matches" className="block rounded px-3 py-2 text-gray-700 hover:bg-gray-100">
-              Partidos
-            </Link>
-            <Link to="/admin/teams" className="block rounded px-3 py-2 text-gray-700 hover:bg-gray-100">
-              Equipos
-            </Link>
-            <Link to="/admin/settings" className="block rounded px-3 py-2 text-gray-700 hover:bg-gray-100">
-              Configuración
-            </Link>
+            {navLinks.map((link) => {
+              const isActive =
+                link.to === "/admin"
+                  ? location.pathname === "/admin"
+                  : location.pathname.startsWith(link.to);
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-elevated/50 text-accent"
+                      : "text-secondary hover:bg-elevated hover:text-primary"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </aside>
-        <main className="flex-1 p-8">
-          <Outlet />
+        <main className="flex-1">
+          <nav className="flex border-b border-default bg-surface md:hidden">
+            <div className="flex overflow-x-auto">
+              {navLinks.map((link) => {
+                const isActive =
+                  link.to === "/admin"
+                    ? location.pathname === "/admin"
+                    : location.pathname.startsWith(link.to);
+                return (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    className={`whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors ${
+                      isActive
+                        ? "border-b-2 border-accent text-accent"
+                        : "text-secondary hover:text-primary"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+          <div className="p-4 md:p-8">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

@@ -7,12 +7,20 @@ export async function loader() {
     include: { _count: { select: { teams: true, matches: true } } },
   });
 
+  const statusColors: Record<string, string> = {
+    SETUP: "text-amber-400",
+    LEAGUE_PHASE: "text-emerald-400",
+    PLAYOFFS: "text-emerald-300",
+    COMPLETED: "text-muted",
+  };
+
   return json({
     tournament: tournament
       ? {
           id: tournament.id,
           name: tournament.name,
           status: tournament.status,
+          statusColor: statusColors[tournament.status] || "text-muted",
           teamCount: tournament._count.teams,
           matchCount: tournament._count.matches,
         }
@@ -26,28 +34,28 @@ export default function AdminDashboard() {
   if (!tournament) {
     return (
       <div>
-        <h1 className="mb-6 text-2xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-600">No hay torneo activo.</p>
+        <h1 className="mb-6 text-2xl font-bold text-primary">Dashboard</h1>
+        <p className="text-secondary">No hay torneo activo.</p>
       </div>
     );
   }
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-gray-800">Dashboard</h1>
+      <h1 className="mb-6 text-2xl font-bold text-primary">Dashboard</h1>
 
       <div className="grid gap-6 sm:grid-cols-3">
-        <div className="rounded-lg bg-white p-6 shadow">
-          <h3 className="text-sm font-medium text-gray-500">Estado</h3>
-          <p className="mt-2 text-2xl font-bold text-gray-800">{tournament.status}</p>
+        <div className="rounded-xl border border-default bg-surface p-6">
+          <h3 className="text-sm font-medium uppercase text-muted">Estado</h3>
+          <p className={`mt-2 text-3xl font-bold ${tournament.statusColor}`}>{tournament.status}</p>
         </div>
-        <div className="rounded-lg bg-white p-6 shadow">
-          <h3 className="text-sm font-medium text-gray-500">Equipos</h3>
-          <p className="mt-2 text-2xl font-bold text-gray-800">{tournament.teamCount}</p>
+        <div className="rounded-xl border border-default bg-surface p-6">
+          <h3 className="text-sm font-medium uppercase text-muted">Equipos</h3>
+          <p className="mt-2 text-3xl font-bold text-primary">{tournament.teamCount}</p>
         </div>
-        <div className="rounded-lg bg-white p-6 shadow">
-          <h3 className="text-sm font-medium text-gray-500">Partidos</h3>
-          <p className="mt-2 text-2xl font-bold text-gray-800">{tournament.matchCount}</p>
+        <div className="rounded-xl border border-default bg-surface p-6">
+          <h3 className="text-sm font-medium uppercase text-muted">Partidos</h3>
+          <p className="mt-2 text-3xl font-bold text-primary">{tournament.matchCount}</p>
         </div>
       </div>
     </div>

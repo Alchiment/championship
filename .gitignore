@@ -154,3 +154,6 @@ openspec/changes/*
 !openspec/spec/
 .atl
 nul
+
+
+build

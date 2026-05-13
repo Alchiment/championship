@@ -61,111 +61,142 @@ export default function AdminSettings() {
   const isSubmitting = navigation.state === "submitting";
 
   if (!tournament) {
-    return <p className="text-gray-600">No tournament found.</p>;
+    return <p className="text-secondary">No tournament found.</p>;
   }
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-gray-800">Configuración</h1>
+      <h1 className="mb-6 text-2xl font-bold text-primary">Configuración</h1>
 
-      <div className="mb-8 rounded-lg bg-white p-6 shadow">
-        <h2 className="mb-4 text-lg font-semibold text-gray-700">Torneo</h2>
+      <div className="mb-8 rounded-xl border border-default bg-surface p-6">
+        <h2 className="mb-4 text-lg font-semibold text-primary">Torneo</h2>
         <Form method="post" className="space-y-4">
           <input type="hidden" name="intent" value="settings" />
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm text-gray-600">Nombre</label>
+              <label className="block text-sm font-medium text-secondary">Nombre</label>
               <input
                 type="text"
                 name="name"
                 defaultValue={tournament.name}
-                className="mt-1 w-full rounded border px-3 py-2"
+                className="mt-1 w-full rounded-lg border border-default bg-inset px-3 py-2 text-primary focus:border-accent focus:ring-1 focus:ring-accent/50"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-600">Sede</label>
+              <label className="block text-sm font-medium text-secondary">Sede</label>
               <input
                 type="text"
                 name="venue"
                 defaultValue={tournament.venue}
-                className="mt-1 w-full rounded border px-3 py-2"
+                className="mt-1 w-full rounded-lg border border-default bg-inset px-3 py-2 text-primary focus:border-accent focus:ring-1 focus:ring-accent/50"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-600">Corte de playoffs</label>
+              <label className="block text-sm font-medium text-secondary">Corte de playoffs</label>
               <input
                 type="number"
                 name="playoffCutoff"
                 defaultValue={tournament.playoffCutoff}
-                className="mt-1 w-full rounded border px-3 py-2"
+                className="mt-1 w-full rounded-lg border border-default bg-inset px-3 py-2 text-primary focus:border-accent focus:ring-1 focus:ring-accent/50"
               />
             </div>
-            <div className="flex items-center space-x-4">
-              <label className="flex items-center space-x-2">
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   name="hasGroupPhase"
                   value="true"
                   defaultChecked={tournament.hasGroupPhase}
+                  className="h-4 w-4 rounded border-default bg-inset text-accent focus:ring-accent/50"
                 />
-                <span className="text-sm text-gray-600">Fase de grupos (playoffs)</span>
+                <span className="text-sm text-secondary">Fase de grupos (playoffs)</span>
               </label>
-              <label className="flex items-center space-x-2">
+              <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   name="thirdPlaceEnabled"
                   value="true"
                   defaultChecked={tournament.thirdPlaceEnabled}
+                  className="h-4 w-4 rounded border-default bg-inset text-accent focus:ring-accent/50"
                 />
-                <span className="text-sm text-gray-600">Partido 3er puesto</span>
+                <span className="text-sm text-secondary">Partido 3er puesto</span>
               </label>
             </div>
           </div>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+            className="rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600 disabled:opacity-50"
           >
             Guardar cambios
           </button>
         </Form>
       </div>
 
-      <div className="mb-8 rounded-lg bg-white p-6 shadow">
-        <h2 className="mb-4 text-lg font-semibold text-gray-700">Organizadores</h2>
+      <div className="mb-8 rounded-xl border border-default bg-surface p-6">
+        <h2 className="mb-4 text-lg font-semibold text-primary">Organizadores</h2>
         <ul className="mb-4 space-y-2">
           {tournament.organizers.map((org) => (
             <li key={org.id} className="flex items-center justify-between text-sm">
-              <span>{org.name}</span>
-              <span className="text-gray-500">{org.role}</span>
+              <span className="text-primary">{org.name}</span>
+              <span className="text-muted">{org.role}</span>
             </li>
           ))}
         </ul>
         <Form method="post" className="flex flex-wrap gap-4">
           <input type="hidden" name="intent" value="add-organizer" />
-          <input type="text" name="name" placeholder="Nombre" required className="rounded border px-3 py-2" />
-          <input type="text" name="role" placeholder="Rol" required className="rounded border px-3 py-2" />
-          <button type="submit" className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700">
+          <input
+            type="text"
+            name="name"
+            placeholder="Nombre"
+            required
+            className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
+          />
+          <input
+            type="text"
+            name="role"
+            placeholder="Rol"
+            required
+            className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
+          />
+          <button
+            type="submit"
+            className="rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600"
+          >
             Añadir
           </button>
         </Form>
       </div>
 
-      <div className="rounded-lg bg-white p-6 shadow">
-        <h2 className="mb-4 text-lg font-semibold text-gray-700">Patrocinadores</h2>
+      <div className="rounded-xl border border-default bg-surface p-6">
+        <h2 className="mb-4 text-lg font-semibold text-primary">Patrocinadores</h2>
         <ul className="mb-4 space-y-2">
           {tournament.sponsors.map((sp) => (
             <li key={sp.id} className="text-sm">
-              <span className="font-medium">{sp.name}</span>
-              {sp.description && <span className="ml-2 text-gray-500">{sp.description}</span>}
+              <span className="font-medium text-primary">{sp.name}</span>
+              {sp.description && <span className="ml-2 text-muted">{sp.description}</span>}
             </li>
           ))}
         </ul>
         <Form method="post" className="flex flex-wrap gap-4">
           <input type="hidden" name="intent" value="add-sponsor" />
-          <input type="text" name="name" placeholder="Nombre" required className="rounded border px-3 py-2" />
-          <input type="text" name="description" placeholder="Descripción" className="rounded border px-3 py-2" />
-          <button type="submit" className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700">
+          <input
+            type="text"
+            name="name"
+            placeholder="Nombre"
+            required
+            className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
+          />
+          <input
+            type="text"
+            name="description"
+            placeholder="Descripción"
+            className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
+          />
+          <button
+            type="submit"
+            className="rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600"
+          >
             Añadir
           </button>
         </Form>

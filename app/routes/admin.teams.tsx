@@ -86,29 +86,46 @@ export default function AdminTeams() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-gray-800">Equipos</h1>
+      <h1 className="mb-6 text-2xl font-bold text-primary">Equipos</h1>
 
-      <div className="mb-8 rounded-lg bg-white p-6 shadow">
-        <h2 className="mb-4 text-lg font-semibold text-gray-700">Añadir equipo</h2>
+      <div className="mb-8 rounded-xl border border-default bg-surface p-6">
+        <h2 className="mb-4 text-lg font-semibold text-primary">Añadir equipo</h2>
         <Form method="post" className="flex flex-wrap gap-4">
           <input type="hidden" name="intent" value="create" />
           <div>
-            <label className="block text-sm text-gray-600">Nombre</label>
-            <input type="text" name="name" required className="rounded border px-3 py-2" />
+            <label className="block text-sm font-medium text-secondary">Nombre</label>
+            <input
+              type="text"
+              name="name"
+              required
+              className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
+            />
           </div>
           <div>
-            <label className="block text-sm text-gray-600">Código</label>
-            <input type="text" name="code" required maxLength={3} className="rounded border px-3 py-2" />
+            <label className="block text-sm font-medium text-secondary">Código</label>
+            <input
+              type="text"
+              name="code"
+              required
+              maxLength={3}
+              className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
+            />
           </div>
           <div>
-            <label className="block text-sm text-gray-600">Bandera</label>
-            <input type="text" name="flag" required placeholder="🇪🇸" className="rounded border px-3 py-2" />
+            <label className="block text-sm font-medium text-secondary">Bandera</label>
+            <input
+              type="text"
+              name="flag"
+              required
+              placeholder="🇪🇸"
+              className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
+            />
           </div>
           <div className="flex items-end">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600 disabled:opacity-50"
             >
               {isSubmitting ? "..." : "Añadir"}
             </button>
@@ -116,30 +133,34 @@ export default function AdminTeams() {
         </Form>
       </div>
 
-      <div className="rounded-lg bg-white shadow">
+      <div className="overflow-hidden rounded-xl border border-default bg-surface">
         <table className="min-w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-elevated">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Equipo</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Código</th>
-              <th className="px-4 py-3 text-center text-xs font-medium uppercase text-gray-500">Jugadores</th>
-              <th className="px-4 py-3 text-center text-xs font-medium uppercase text-gray-500">Estado</th>
-              <th className="px-4 py-3 text-center text-xs font-medium uppercase text-gray-500">Acción</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-muted">Equipo</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-muted">Código</th>
+              <th className="px-4 py-3 text-center text-xs font-medium uppercase text-muted">Jugadores</th>
+              <th className="px-4 py-3 text-center text-xs font-medium uppercase text-muted">Estado</th>
+              <th className="px-4 py-3 text-center text-xs font-medium uppercase text-muted">Acción</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-default">
             {teams.map((team) => (
-              <tr key={team.id} className="hover:bg-gray-50">
+              <tr key={team.id} className="hover:bg-elevated/50">
                 <td className="px-4 py-3">
                   <span className="mr-2">{team.flag}</span>
-                  <span className="font-medium text-gray-800">{team.name}</span>
+                  <span className="font-medium text-primary">{team.name}</span>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-600">{team.code}</td>
-                <td className="px-4 py-3 text-center text-sm text-gray-600">{team.players.length}</td>
+                <td className="px-4 py-3 text-sm text-secondary">{team.code}</td>
+                <td className="px-4 py-3 text-center text-sm text-secondary">{team.players.length}</td>
                 <td className="px-4 py-3 text-center">
-                  <span className={`rounded px-2 py-1 text-xs ${
-                    team.status === "ACTIVE" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-                  }`}>
+                  <span
+                    className={`rounded px-2 py-1 text-xs ${
+                      team.status === "ACTIVE"
+                        ? "bg-emerald-500/10 text-emerald-400"
+                        : "bg-red-500/10 text-red-400"
+                    }`}
+                  >
                     {team.status}
                   </span>
                 </td>
@@ -150,7 +171,7 @@ export default function AdminTeams() {
                       <input type="hidden" name="teamId" value={team.id} />
                       <button
                         type="submit"
-                        className="text-sm text-red-600 hover:text-red-800"
+                        className="text-sm text-red-400 hover:text-red-300"
                         onClick={(e) => {
                           if (!confirm("¿Retirar equipo?")) e.preventDefault();
                         }}

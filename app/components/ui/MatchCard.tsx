@@ -16,31 +16,30 @@ export function MatchCard({ match }: MatchCardProps) {
   return (
     <Link
       to={`/match/${match.id}`}
-      className="flex items-center justify-between rounded-lg border p-4 hover:bg-gray-50"
+      className="flex items-center justify-between rounded-xl border border-default bg-surface p-4 transition-colors hover:border-accent/30"
     >
-      <div className="flex items-center space-x-3">
+      <div className="flex w-1/3 items-center gap-3">
         <FlagBadge flag={match.homeTeam.flag} code={match.homeTeam.code} />
-        <span className="font-medium text-gray-800">{match.homeTeam.name}</span>
+        <span className="truncate font-medium text-primary">{match.homeTeam.name}</span>
       </div>
 
-      <div className="text-center">
+      <div className="w-1/3 text-center">
         {match.status === "COMPLETED" ? (
-          <span className="text-xl font-bold text-gray-800">
+          <span className="text-xl font-bold text-accent">
             {match.homeScore} - {match.awayScore}
           </span>
         ) : match.status === "IN_PROGRESS" ? (
-          <span className="rounded bg-yellow-100 px-2 py-1 text-xs text-yellow-700">
+          <span className="text-emerald-400">
+            <span className="mr-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
             En juego
           </span>
         ) : (
-          <span className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-700">
-            Programado
-          </span>
+          <span className="text-muted">vs</span>
         )}
       </div>
 
-      <div className="flex items-center space-x-3">
-        <span className="font-medium text-gray-800">{match.awayTeam.name}</span>
+      <div className="flex w-1/3 items-center justify-end gap-3">
+        <span className="truncate font-medium text-primary">{match.awayTeam.name}</span>
         <FlagBadge flag={match.awayTeam.flag} code={match.awayTeam.code} />
       </div>
     </Link>

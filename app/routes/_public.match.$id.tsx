@@ -30,29 +30,32 @@ export default function MatchDetailPage() {
   const { match } = useLoaderData<typeof loader>();
 
   return (
-    <div className="mx-auto max-w-lg rounded-lg bg-white p-8 shadow">
-      <h2 className="mb-2 text-center text-sm text-gray-500">
+    <div className="mx-auto max-w-lg rounded-xl border border-default bg-surface p-8">
+      <h2 className="mb-2 text-center text-sm text-muted">
         Jornada {match.round} · {match.phase === "LEAGUE" ? "Liga" : match.phase}
       </h2>
-      <div className="flex items-center justify-center space-x-8 py-8">
+      <div className="flex items-center justify-center gap-8 py-8">
         <div className="text-center">
-          <span className="text-4xl">{match.homeTeam.flag}</span>
-          <p className="mt-2 font-semibold text-gray-800">{match.homeTeam.name}</p>
+          <span className="text-5xl">{match.homeTeam.flag}</span>
+          <p className="mt-2 font-semibold text-primary">{match.homeTeam.name}</p>
         </div>
         <div className="text-center">
           {match.status === "COMPLETED" ? (
-            <span className="text-3xl font-bold text-gray-800">
+            <span className="text-4xl font-bold text-accent">
               {match.homeScore} - {match.awayScore}
             </span>
-          ) : (
-            <span className="text-lg text-gray-500">
-              {match.status === "IN_PROGRESS" ? "En juego" : "Programado"}
+          ) : match.status === "IN_PROGRESS" ? (
+            <span className="flex items-center gap-1.5 text-emerald-400">
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
+              En juego
             </span>
+          ) : (
+            <span className="text-lg text-muted">Programado</span>
           )}
         </div>
         <div className="text-center">
-          <span className="text-4xl">{match.awayTeam.flag}</span>
-          <p className="mt-2 font-semibold text-gray-800">{match.awayTeam.name}</p>
+          <span className="text-5xl">{match.awayTeam.flag}</span>
+          <p className="mt-2 font-semibold text-primary">{match.awayTeam.name}</p>
         </div>
       </div>
     </div>

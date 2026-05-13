@@ -54,13 +54,13 @@ export default function TeamDetailPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-lg bg-white p-6 shadow">
-        <div className="flex items-center space-x-4">
+      <div className="rounded-xl border border-default bg-surface p-6">
+        <div className="flex items-center gap-4">
           <FlagBadge flag={team.flag} code={team.code} />
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">{team.name}</h1>
+            <h1 className="text-2xl font-bold text-primary">{team.name}</h1>
             {team.status === "WITHDRAWN" && (
-              <span className="inline-block rounded bg-red-100 px-2 py-1 text-xs text-red-700">
+              <span className="inline-block rounded bg-red-500/10 px-2 py-1 text-xs text-red-400">
                 WITHDRAWN
               </span>
             )}
@@ -68,22 +68,22 @@ export default function TeamDetailPage() {
         </div>
       </div>
 
-      <div className="rounded-lg bg-white p-6 shadow">
-        <h2 className="mb-4 text-lg font-semibold text-gray-700">Jugadores</h2>
+      <div className="rounded-xl border border-default bg-surface p-6">
+        <h2 className="mb-4 text-lg font-semibold text-primary">Jugadores</h2>
         {team.players.length === 0 ? (
-          <p className="text-gray-500">No hay jugadores registrados.</p>
+          <p className="text-muted">No hay jugadores registrados.</p>
         ) : (
-          <ul className="divide-y">
+          <ul className="divide-y divide-default">
             {team.players.map((player) => (
               <li key={player.id} className="flex items-center justify-between py-2">
-                <span className="text-gray-800">
+                <span className="text-primary">
                   {player.name}
                   {player.isCaptain && (
-                    <span className="ml-2 text-xs text-yellow-600">(C)</span>
+                    <span className="ml-2 text-xs text-accent">(C)</span>
                   )}
                 </span>
                 {player.jerseyNumber && (
-                  <span className="text-sm text-gray-500">#{player.jerseyNumber}</span>
+                  <span className="text-sm text-muted">#{player.jerseyNumber}</span>
                 )}
               </li>
             ))}
@@ -91,34 +91,34 @@ export default function TeamDetailPage() {
         )}
       </div>
 
-      <div className="rounded-lg bg-white p-6 shadow">
-        <h2 className="mb-4 text-lg font-semibold text-gray-700">Partidos</h2>
+      <div className="rounded-xl border border-default bg-surface p-6">
+        <h2 className="mb-4 text-lg font-semibold text-primary">Partidos</h2>
         {matches.length === 0 ? (
-          <p className="text-gray-500">No hay partidos aún.</p>
+          <p className="text-muted">No hay partidos aún.</p>
         ) : (
           <div className="space-y-2">
             {matches.map((match) => (
               <a
                 key={match.id}
                 href={`/match/${match.id}`}
-                className="flex items-center justify-between rounded border p-3 hover:bg-gray-50"
+                className="flex items-center justify-between rounded-lg border border-default bg-surface p-3 transition-colors hover:border-accent/30"
               >
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2">
                   <span>{match.homeTeam.flag}</span>
-                  <span className="text-sm text-gray-800">{match.homeTeam.name}</span>
+                  <span className="text-sm text-primary">{match.homeTeam.name}</span>
                 </div>
                 <div className="text-center">
                   {match.status === "COMPLETED" ? (
-                    <span className="font-bold text-gray-800">
+                    <span className="font-bold text-accent">
                       {match.homeScore} - {match.awayScore}
                     </span>
                   ) : (
-                    <span className="text-sm text-gray-500">vs</span>
+                    <span className="text-sm text-secondary">vs</span>
                   )}
-                  <span className="ml-2 text-xs text-gray-400">J{match.round}</span>
+                  <span className="ml-2 text-xs text-muted">J{match.round}</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-800">{match.awayTeam.name}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-primary">{match.awayTeam.name}</span>
                   <span>{match.awayTeam.flag}</span>
                 </div>
               </a>
