@@ -6,9 +6,7 @@ import { requireAdmin } from "../utils/auth.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAdmin(request);
-  const tournament = await prisma.tournament.findFirst({
-    include: { organizers: true, sponsors: true },
-  });
+  const tournament = await prisma.tournament.findFirst();
   return data({ tournament });
 }
 
@@ -28,26 +26,6 @@ export async function action({ request }: ActionFunctionArgs) {
         playoffCutoff: parseInt(formData.get("playoffCutoff") as string),
         hasGroupPhase: formData.get("hasGroupPhase") === "true",
         thirdPlaceEnabled: formData.get("thirdPlaceEnabled") === "true",
-      },
-    });
-  }
-
-  if (intent === "add-organizer") {
-    await prisma.organizer.create({
-      data: {
-        name: formData.get("name") as string,
-        role: formData.get("role") as string,
-        tournamentId: tournament.id,
-      },
-    });
-  }
-
-  if (intent === "add-sponsor") {
-    await prisma.sponsor.create({
-      data: {
-        name: formData.get("name") as string,
-        description: (formData.get("description") as string) || null,
-        tournamentId: tournament.id,
       },
     });
   }
@@ -129,75 +107,6 @@ export default function AdminSettings() {
             className="rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600 disabled:opacity-50"
           >
             Guardar cambios
-          </button>
-        </Form>
-      </div>
-
-      <div className="mb-8 rounded-xl border border-default bg-surface p-6">
-        <h2 className="mb-4 text-lg font-semibold text-primary">Organizadores</h2>
-        <ul className="mb-4 space-y-2">
-          {tournament.organizers.map((org) => (
-            <li key={org.id} className="flex items-center justify-between text-sm">
-              <span className="text-primary">{org.name}</span>
-              <span className="text-muted">{org.role}</span>
-            </li>
-          ))}
-        </ul>
-        <Form method="post" className="flex flex-wrap gap-4">
-          <input type="hidden" name="intent" value="add-organizer" />
-          <input
-            type="text"
-            name="name"
-            placeholder="Nombre"
-            required
-            className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
-          />
-          <input
-            type="text"
-            name="role"
-            placeholder="Rol"
-            required
-            className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
-          />
-          <button
-            type="submit"
-            className="rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600"
-          >
-            Añadir
-          </button>
-        </Form>
-      </div>
-
-      <div className="rounded-xl border border-default bg-surface p-6">
-        <h2 className="mb-4 text-lg font-semibold text-primary">Patrocinadores</h2>
-        <ul className="mb-4 space-y-2">
-          {tournament.sponsors.map((sp) => (
-            <li key={sp.id} className="text-sm">
-              <span className="font-medium text-primary">{sp.name}</span>
-              {sp.description && <span className="ml-2 text-muted">{sp.description}</span>}
-            </li>
-          ))}
-        </ul>
-        <Form method="post" className="flex flex-wrap gap-4">
-          <input type="hidden" name="intent" value="add-sponsor" />
-          <input
-            type="text"
-            name="name"
-            placeholder="Nombre"
-            required
-            className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
-          />
-          <input
-            type="text"
-            name="description"
-            placeholder="Descripción"
-            className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
-          />
-          <button
-            type="submit"
-            className="rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600"
-          >
-            Añadir
           </button>
         </Form>
       </div>

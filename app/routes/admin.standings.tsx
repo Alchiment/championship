@@ -1,0 +1,37 @@
+import { data } from "react-router";
+import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
+import { prisma } from "../infrastructure/database/client";
+import { requireAdmin } from "../utils/auth.server";
+import { CalculateStandings } from "../domain/use-cases/CalculateStandings";
+import { PrismaTeamRepository } from "../infrastructure/database/repositories/PrismaTeamRepository";
+import { PrismaMatchRepository } from "../infrastructure/database/repositories/PrismaMatchRepository";
+import { StandingAdapter } from "../adapters/standing.adapter";
+import { StandingsTable } from "../components/ui/StandingsTable";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  await requireAdmin(request);
+  const tournament = await prisma.tournament.findFirst();
+  if (!tournament) {
+    return data({ standings: [], playoffCutoff: 0 });
+  }
+
+  const teamRepo = new PrismaTeamRepository();
+  const matchRepo = new PrismaMatchRepository();
+  const calculateStandings = new CalculateStandings(teamRepo, matchRepo);
+  const standings = await calculateStandings.execute(tournament.id);
+  const dtos = standings.map((s, i) => StandingAdapter.toDTO(s, i + 1));
+
+  return data({ standings: dtos, playoffCutoff: tournament.playoffCutoff });
+}
+
+export default function AdminStandings() {
+  const { standings, playoffCutoff } = useLoaderData<typeof loader>();
+
+  return (
+    <div>
+      <h1 className="mb-6 text-2xl font-bold text-primary">Tabla de posiciones</h1>
+      <StandingsTable standings={standings} playoffCutoff={playoffCutoff} />
+    </div>
+  );
+}

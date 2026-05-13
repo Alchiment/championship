@@ -16,6 +16,7 @@ export default function AdminLayout() {
   const navLinks = [
     { to: "/admin/teams", label: "Equipos" },
     { to: "/admin/matches", label: "Partidos" },
+    { to: "/admin/standings", label: "Tabla" },
     { to: "/admin/settings", label: "Configuración" },
   ];
 
@@ -52,6 +53,14 @@ export default function AdminLayout() {
             >
               ← Sitio público
             </a>
+            <form method="post" action="/logout">
+              <button
+                type="submit"
+                className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-secondary transition-colors hover:bg-elevated hover:text-primary"
+              >
+                Cerrar sesión
+              </button>
+            </form>
           </nav>
         </aside>
         <main className="flex-1">
@@ -81,6 +90,14 @@ export default function AdminLayout() {
             >
               ← Público
             </a>
+            <form method="post" action="/logout">
+              <button
+                type="submit"
+                className="whitespace-nowrap px-4 py-3 text-sm font-medium text-secondary transition-colors hover:text-primary"
+              >
+                Cerrar sesión
+              </button>
+            </form>
           </nav>
           <div className="p-4 md:p-8">
             <Outlet />
