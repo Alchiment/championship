@@ -2,6 +2,7 @@ import { json } from "@remix-run/node";
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
 import { prisma } from "../infrastructure/database/client";
 import { requireAdmin } from "../utils/auth.server";
+import { generateCode } from "../utils/country-codes";
 
 export async function loader() {
   const tournament = await prisma.tournament.findFirst();
@@ -42,7 +43,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const team = await prisma.team.create({
       data: {
         name: body.name,
-        code: body.code,
+        code: generateCode(body.name),
         flag: body.flag,
         tournamentId: tournament.id,
       },

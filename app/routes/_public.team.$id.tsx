@@ -68,6 +68,7 @@ export default function TeamDetailPage() {
         </div>
       </div>
 
+      {/* TODO: re-enable when player management is ready
       <div className="rounded-xl border border-default bg-surface p-6">
         <h2 className="mb-4 text-lg font-semibold text-primary">Jugadores</h2>
         {team.players.length === 0 ? (
@@ -90,6 +91,7 @@ export default function TeamDetailPage() {
           </ul>
         )}
       </div>
+      */}
 
       <div className="rounded-xl border border-default bg-surface p-6">
         <h2 className="mb-4 text-lg font-semibold text-primary">Partidos</h2>

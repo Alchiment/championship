@@ -3,6 +3,7 @@ import { useLoaderData, Form, useNavigation } from "@remix-run/react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { prisma } from "../infrastructure/database/client";
 import { requireAdmin } from "../utils/auth.server";
+import { generateCode } from "../utils/country-codes";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAdmin(request);
@@ -39,8 +40,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (intent === "create") {
     const name = formData.get("name") as string;
-    const code = formData.get("code") as string;
     const flag = formData.get("flag") as string;
+    const code = generateCode(name);
     const tournament = await prisma.tournament.findFirst();
     if (!tournament) return json({ error: "No tournament found" }, { status: 400 });
 
@@ -102,16 +103,6 @@ export default function AdminTeams() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-secondary">Código</label>
-            <input
-              type="text"
-              name="code"
-              required
-              maxLength={3}
-              className="rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
-            />
-          </div>
-          <div>
             <label className="block text-sm font-medium text-secondary">Bandera</label>
             <input
               type="text"
@@ -138,8 +129,8 @@ export default function AdminTeams() {
           <thead className="bg-elevated">
             <tr>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase text-muted">Equipo</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-muted">Código</th>
-              <th className="px-4 py-3 text-center text-xs font-medium uppercase text-muted">Jugadores</th>
+              {/* TODO: re-enable when player management is ready */}
+              {/* <th className="px-4 py-3 text-center text-xs font-medium uppercase text-muted">Jugadores</th> */}
               <th className="px-4 py-3 text-center text-xs font-medium uppercase text-muted">Estado</th>
               <th className="px-4 py-3 text-center text-xs font-medium uppercase text-muted">Acción</th>
             </tr>
@@ -151,8 +142,15 @@ export default function AdminTeams() {
                   <span className="mr-2">{team.flag}</span>
                   <span className="font-medium text-primary">{team.name}</span>
                 </td>
-                <td className="px-4 py-3 text-sm text-secondary">{team.code}</td>
-                <td className="px-4 py-3 text-center text-sm text-secondary">{team.players.length}</td>
+                {/* TODO: re-enable when player management is ready */}
+                {/* <td className="px-4 py-3 text-center text-sm">
+                  <a
+                    href={`/team/${team.id}`}
+                    className="text-accent hover:text-accent-600 underline"
+                  >
+                    {team.players.length} jugadores
+                  </a>
+                </td> */}
                 <td className="px-4 py-3 text-center">
                   <span
                     className={`rounded px-2 py-1 text-xs ${

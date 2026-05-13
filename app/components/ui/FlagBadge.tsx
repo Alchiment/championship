@@ -3,11 +3,10 @@ interface FlagBadgeProps {
   code: string;
 }
 
-export function FlagBadge({ flag, code }: FlagBadgeProps) {
+export function FlagBadge({ flag }: FlagBadgeProps) {
   return (
-    <span className="inline-flex items-center gap-1" title={code}>
+    <span className="inline-flex items-center gap-1">
       <span className="text-xl">{flag}</span>
-      <span className="text-xs text-muted">{code}</span>
     </span>
   );
 }
