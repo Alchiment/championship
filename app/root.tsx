@@ -41,24 +41,24 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <div className="rounded-lg bg-white p-8 shadow-md text-center">
-          <h1 className="mb-4 text-4xl font-bold text-gray-800">
+      <div className="flex min-h-screen items-center justify-center bg-base">
+        <div className="rounded-2xl border border-default bg-surface p-8 text-center">
+          <h1 className="mb-4 text-4xl font-bold text-accent">
             {error.status}
           </h1>
-          <p className="text-gray-600">{error.statusText}</p>
+          <p className="text-secondary">{error.statusText}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="rounded-lg bg-white p-8 shadow-md text-center">
-        <h1 className="mb-4 text-2xl font-bold text-red-600">
+    <div className="flex min-h-screen items-center justify-center bg-base">
+      <div className="rounded-2xl border border-default bg-surface p-8 text-center">
+        <h1 className="mb-4 text-2xl font-bold text-red-400">
           Something went wrong
         </h1>
-        <p className="text-gray-600">Please try again later.</p>
+        <p className="text-secondary">Please try again later.</p>
       </div>
     </div>
   );

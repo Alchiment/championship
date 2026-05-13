@@ -41,9 +41,9 @@ export default function TeamsPage() {
 
   return (
     <div>
-      <h2 className="mb-6 text-2xl font-bold text-gray-800">Equipos</h2>
+      <h1 className="mb-6 text-2xl font-bold text-primary">Equipos</h1>
       {teams.length === 0 ? (
-        <p className="text-gray-600">No hay equipos registrados.</p>
+        <p className="text-muted">No hay equipos registrados.</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {teams.map((team) => (

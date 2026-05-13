@@ -25,18 +25,18 @@ export default function Login() {
 
   if (actionData?.success) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-          <h1 className="mb-6 text-center text-2xl font-bold text-gray-800">
+      <div className="flex min-h-screen items-center justify-center bg-base">
+        <div className="w-full max-w-md rounded-2xl border border-default bg-surface p-8">
+          <h1 className="mb-6 text-center text-2xl font-bold text-primary">
             Código de verificación
           </h1>
-          <p className="mb-4 text-center text-gray-600">
+          <p className="mb-4 text-center text-secondary">
             Hemos enviado un código a {actionData.phoneNumber}
           </p>
           <form method="post" action="/verify" className="space-y-4">
             <input type="hidden" name="phoneNumber" value={actionData.phoneNumber} />
             <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="code" className="block text-sm font-medium text-secondary">
                 Código de verificación
               </label>
               <input
@@ -45,12 +45,12 @@ export default function Login() {
                 id="code"
                 required
                 maxLength={6}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                className="mt-1 block w-full rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
               />
             </div>
             <button
               type="submit"
-              className="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              className="w-full rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600"
             >
               Verificar
             </button>
@@ -61,14 +61,14 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-center text-2xl font-bold text-gray-800">
+    <div className="flex min-h-screen items-center justify-center bg-base">
+      <div className="w-full max-w-md rounded-2xl border border-default bg-surface p-8">
+        <h1 className="mb-6 text-center text-2xl font-bold text-primary">
           Iniciar Sesión
         </h1>
         <Form method="post" className="space-y-4">
           <div>
-            <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="phoneNumber" className="block text-sm font-medium text-secondary">
               Número de teléfono
             </label>
             <input
@@ -77,16 +77,16 @@ export default function Login() {
               id="phoneNumber"
               required
               placeholder="+573001234567"
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              className="mt-1 block w-full rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
             />
           </div>
           {actionData?.error && (
-            <p className="text-sm text-red-600">{actionData.error}</p>
+            <p className="text-sm text-red-400">{actionData.error}</p>
           )}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+            className="w-full rounded-lg bg-accent px-4 py-2.5 font-medium text-slate-950 hover:bg-accent-600 disabled:opacity-50"
           >
             {isSubmitting ? "Enviando..." : "Enviar código"}
           </button>

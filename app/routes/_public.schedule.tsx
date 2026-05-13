@@ -44,16 +44,16 @@ export default function SchedulePage() {
   const { rounds } = useLoaderData<typeof loader>();
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800">Calendario</h2>
+    <div className="space-y-8">
+      <h1 className="text-2xl font-bold text-primary">Calendario</h1>
       {rounds.length === 0 ? (
-        <p className="text-gray-600">No hay partidos programados aún.</p>
+        <p className="text-muted">No hay partidos programados aún.</p>
       ) : (
         rounds.map((round) => (
-          <div key={round.round} className="rounded-lg bg-white p-4 shadow">
-            <h3 className="mb-4 text-lg font-semibold text-gray-700">
+          <div key={round.round} className="rounded-xl border border-default bg-surface p-5">
+            <h2 className="mb-4 text-lg font-semibold text-primary">
               Jornada {round.round}
-            </h3>
+            </h2>
             <div className="space-y-3">
               {round.matches.map((match) => (
                 <MatchCard key={match.id} match={match} />

@@ -10,7 +10,7 @@ import { StandingsTable } from "../components/ui/StandingsTable";
 export async function loader() {
   const tournament = await prisma.tournament.findFirst();
   if (!tournament) {
-    return json({ standings: [] });
+    return json({ standings: [], playoffCutoff: 0 });
   }
 
   const teamRepo = new PrismaTeamRepository();
@@ -20,10 +20,16 @@ export async function loader() {
   const standings = await calculateStandings.execute(tournament.id);
   const dtos = standings.map((s, i) => StandingAdapter.toDTO(s, i + 1));
 
-  return json({ standings: dtos });
+  return json({ standings: dtos, playoffCutoff: tournament.playoffCutoff });
 }
 
 export default function StandingsPage() {
-  const { standings } = useLoaderData<typeof loader>();
-  return <StandingsTable standings={standings} />;
+  const { standings, playoffCutoff } = useLoaderData<typeof loader>();
+
+  return (
+    <div>
+      <h1 className="mb-6 text-2xl font-bold text-primary">Tabla de posiciones</h1>
+      <StandingsTable standings={standings} playoffCutoff={playoffCutoff} />
+    </div>
+  );
 }

@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-base text-primary;
+  }
+
+  a {
+    @apply text-accent;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-accent/50;
+  }
+}

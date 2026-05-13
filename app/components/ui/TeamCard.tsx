@@ -14,23 +14,24 @@ interface TeamCardProps {
 
 export function TeamCard({ team }: TeamCardProps) {
   return (
-    <div className="rounded-lg border bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex items-center space-x-3">
-        <div className="text-3xl">{team.flag}</div>
+    <div className="rounded-xl border border-default bg-surface p-5 transition-colors hover:border-accent/30">
+      <div className="flex items-center gap-3">
+        <div className="text-4xl">{team.flag}</div>
         <div>
-          <h3 className="font-semibold text-gray-800">{team.name}</h3>
-          <p className="text-sm text-gray-500">{team.code}</p>
+          <h3 className="font-semibold text-primary">{team.name}</h3>
         </div>
       </div>
-      <div className="mt-3 flex items-center justify-between text-sm text-gray-600">
+      {/* TODO: re-enable when player management is ready
+      <div className="mt-3 flex items-center justify-between text-sm text-secondary">
         <span>{team.playerCount} jugadores</span>
         {team.captain && (
-          <span className="text-yellow-600">Capitán: {team.captain.name}</span>
+          <span className="text-accent">Capitán: {team.captain.name}</span>
         )}
       </div>
+      */}
       {team.status === "WITHDRAWN" && (
         <div className="mt-2">
-          <span className="rounded bg-red-100 px-2 py-0.5 text-xs text-red-700">
+          <span className="rounded bg-red-500/10 px-2 py-0.5 text-xs text-red-400">
             WITHDRAWN
           </span>
         </div>
