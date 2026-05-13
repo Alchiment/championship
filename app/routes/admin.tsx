@@ -5,6 +5,8 @@ import { requireAdmin } from "../utils/auth.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAdmin(request);
+  const url = new URL(request.url);
+  if (url.pathname === "/admin") return redirect("/admin/teams");
   return data({});
 }
 
@@ -12,9 +14,9 @@ export default function AdminLayout() {
   const location = useLocation();
 
   const navLinks = [
-    { to: "/admin", label: "Dashboard" },
-    { to: "/admin/matches", label: "Partidos" },
     { to: "/admin/teams", label: "Equipos" },
+    { to: "/admin/matches", label: "Partidos" },
+    { to: "/admin/standings", label: "Tabla" },
     { to: "/admin/settings", label: "Configuración" },
   ];
 
@@ -23,16 +25,13 @@ export default function AdminLayout() {
       <div className="flex">
         <aside className="hidden w-64 border-r border-default bg-surface md:block">
           <div className="p-4">
-            <Link to="/admin" className="text-xl font-bold text-primary">
+            <Link to="/admin/teams" className="text-xl font-bold text-primary">
               Admin
             </Link>
           </div>
           <nav className="space-y-1 px-4">
             {navLinks.map((link) => {
-              const isActive =
-                link.to === "/admin"
-                  ? location.pathname === "/admin"
-                  : location.pathname.startsWith(link.to);
+              const isActive = location.pathname.startsWith(link.to);
               return (
                 <Link
                   key={link.to}
@@ -54,16 +53,21 @@ export default function AdminLayout() {
             >
               ← Sitio público
             </a>
+            <form method="post" action="/logout">
+              <button
+                type="submit"
+                className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-secondary transition-colors hover:bg-elevated hover:text-primary"
+              >
+                Cerrar sesión
+              </button>
+            </form>
           </nav>
         </aside>
         <main className="flex-1">
           <nav className="flex border-b border-default bg-surface md:hidden">
             <div className="flex overflow-x-auto">
               {navLinks.map((link) => {
-                const isActive =
-                  link.to === "/admin"
-                    ? location.pathname === "/admin"
-                    : location.pathname.startsWith(link.to);
+                const isActive = location.pathname.startsWith(link.to);
                 return (
                   <Link
                     key={link.to}
@@ -86,6 +90,14 @@ export default function AdminLayout() {
             >
               ← Público
             </a>
+            <form method="post" action="/logout">
+              <button
+                type="submit"
+                className="whitespace-nowrap px-4 py-3 text-sm font-medium text-secondary transition-colors hover:text-primary"
+              >
+                Cerrar sesión
+              </button>
+            </form>
           </nav>
           <div className="p-4 md:p-8">
             <Outlet />

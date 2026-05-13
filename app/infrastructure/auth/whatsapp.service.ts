@@ -42,13 +42,12 @@ export class WhatsAppService {
 
   async sendVerificationCode(phoneNumber: string, code: string): Promise<void> {
     if (!this.config.token || !this.config.phoneNumberId) {
-      console.log(`[DEV] Verification code for ${phoneNumber}: ${code}`);
       return;
     }
 
     // print code for testing purposes in non-production environments
     if (process.env.NODE_ENV !== "production") {
-      console.log(code);
+      console.log(`[DEV] Verification code for ${phoneNumber}: ${code}`);
       return;
     }
 

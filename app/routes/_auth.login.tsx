@@ -3,13 +3,17 @@ import type { ActionFunctionArgs } from "react-router";
 import { data } from "react-router";
 import { whatsAppService } from "../infrastructure/auth/whatsapp.service";
 
+const PHONE_PREFIX = "+57";
+
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const phoneNumber = formData.get("phoneNumber") as string;
+  const rawNumber = formData.get("phoneNumber") as string;
 
-  if (!phoneNumber || !/^\+?\d{7,15}$/.test(phoneNumber)) {
-    return data({ error: "Please enter a valid phone number" }, { status: 400 });
+  if (!rawNumber || !/^\d{7,10}$/.test(rawNumber)) {
+    return data({ error: "Ingresa un número de teléfono válido" }, { status: 400 });
   }
+
+  const phoneNumber = `${PHONE_PREFIX}${rawNumber}`;
 
   const code = whatsAppService.generateCode();
   whatsAppService.storeCode(phoneNumber, code);
@@ -71,14 +75,19 @@ export default function Login() {
             <label htmlFor="phoneNumber" className="block text-sm font-medium text-secondary">
               Número de teléfono
             </label>
-            <input
-              type="tel"
-              name="phoneNumber"
-              id="phoneNumber"
-              required
-              placeholder="+573001234567"
-              className="mt-1 block w-full rounded-lg border border-default bg-inset px-3 py-2 text-primary placeholder:text-muted focus:border-accent focus:ring-1 focus:ring-accent/50"
-            />
+            <div className="mt-1 flex rounded-lg border border-default bg-inset focus-within:border-accent focus-within:ring-1 focus-within:ring-accent/50">
+              <span className="inline-flex items-center rounded-l-lg border-r border-default bg-surface px-3 text-sm font-medium text-muted">
+                +57
+              </span>
+              <input
+                type="tel"
+                name="phoneNumber"
+                id="phoneNumber"
+                required
+                placeholder="3001234567"
+                className="w-full rounded-r-lg bg-transparent px-3 py-2 text-primary placeholder:text-muted focus:outline-none"
+              />
+            </div>
           </div>
           {actionData && "error" in actionData && (
             <p className="text-sm text-red-400">{actionData.error}</p>
