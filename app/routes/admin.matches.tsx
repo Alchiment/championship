@@ -7,7 +7,7 @@ import { requireAdmin } from "../utils/auth.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAdmin(request);
   const tournament = await prisma.tournament.findFirst();
-  if (!tournament) return json({ rounds: [] });
+  if (!tournament) return json({ rounds: [], tournamentId: "" });
 
   const matches = await prisma.match.findMany({
     where: { tournamentId: tournament.id },
@@ -109,7 +109,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function AdminMatches() {
-  const { rounds } = useLoaderData<typeof loader>();
+  const { rounds, tournamentId } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -122,6 +122,7 @@ export default function AdminMatches() {
           <h2 className="mb-4 text-lg font-semibold text-gray-700">Generar calendario</h2>
           <Form method="post">
             <input type="hidden" name="intent" value="generate" />
+            <input type="hidden" name="tournamentId" value={tournamentId} />
             <button
               type="submit"
               disabled={isSubmitting}

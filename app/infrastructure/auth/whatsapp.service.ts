@@ -46,6 +46,13 @@ export class WhatsAppService {
       return;
     }
 
+    // print code for testing purposes in non-production environments
+    if (process.env.NODE_ENV !== "production") {
+      console.log(code);
+      return;
+    }
+
+
     await httpFacade.post(
       `https://graph.facebook.com/v22.0/${this.config.phoneNumberId}/messages`,
       {

@@ -24,7 +24,7 @@ export default function PublicLayout() {
               <Link to="/" className="text-xl font-bold text-gray-800">
                 K108 Torneo
               </Link>
-              <div className="hidden space-x-4 md:flex">
+              <div className="flex space-x-4">
                 <Link to="/standings" className="text-gray-600 hover:text-gray-800">
                   Tabla
                 </Link>

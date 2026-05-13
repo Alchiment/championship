@@ -13,7 +13,7 @@ export class AuthService {
     if (!phoneNumber) return null;
     return {
       phoneNumber,
-      isAdmin: session.get("isAdmin") || false,
+      isAdmin: session.get("isAdmin") === true || session.get("isAdmin") === "true",
     };
   }
 
