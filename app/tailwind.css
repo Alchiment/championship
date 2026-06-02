@@ -19,3 +19,16 @@
     @apply outline-none ring-2 ring-accent/50;
   }
 }
+
+@keyframes loading-bar-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+.loading-bar-slide {
+  animation: loading-bar-slide 1s ease-in-out infinite;
+}

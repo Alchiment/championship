@@ -6,8 +6,10 @@ import {
   ScrollRestoration,
   useRouteError,
   isRouteErrorResponse,
+  useNavigation,
 } from "react-router";
 import type { LinksFunction } from "react-router";
+import { LoadingBar } from "./components/ui/LoadingBar";
 import styles from "./tailwind.css?url";
 
 export const links: LinksFunction = () => [
@@ -33,7 +35,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const navigation = useNavigation();
+  return (
+    <>
+      {navigation.state !== "idle" && <LoadingBar />}
+      <Outlet />
+    </>
+  );
 }
 
 export function ErrorBoundary() {
