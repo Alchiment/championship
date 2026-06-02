@@ -1,4 +1,5 @@
 import { Standing } from "../value-objects/Standing";
+import { MatchStatus } from "../entities/Match";
 import type { TeamRepository } from "../repositories/TeamRepository";
 import type { MatchRepository } from "../repositories/MatchRepository";
 
@@ -20,13 +21,15 @@ export class CalculateStandings {
     const matches = await this.matchRepo.findByTournament(tournamentId);
 
     const completedMatches: MatchResult[] = matches
-      .filter((m) => m.homeScore !== null && m.awayScore !== null)
+      .filter((m) => m.homeScore !== null && m.awayScore !== null && m.status !== MatchStatus.NO_SHOW)
       .map((m) => ({
         homeTeamId: m.homeTeamId,
         awayTeamId: m.awayTeamId,
         homeScore: m.homeScore!,
         awayScore: m.awayScore!,
       }));
+
+    const noShowMatches = matches.filter((m) => m.status === MatchStatus.NO_SHOW);
 
     const teamStats = new Map<
       string,
@@ -56,6 +59,11 @@ export class CalculateStandings {
     for (const match of completedMatches) {
       this.accumulateMatch(teamStats, match.homeTeamId, match.homeScore, match.awayScore);
       this.accumulateMatch(teamStats, match.awayTeamId, match.awayScore, match.homeScore);
+    }
+
+    for (const match of noShowMatches) {
+      this.incrementPlayed(teamStats, match.homeTeamId);
+      this.incrementPlayed(teamStats, match.awayTeamId);
     }
 
     const standings = teams.map((team) => {
@@ -100,6 +108,12 @@ export class CalculateStandings {
     } else {
       s.losses++;
     }
+  }
+
+  private incrementPlayed(stats: Map<string, any>, teamId: string): void {
+    const s = stats.get(teamId);
+    if (!s) return;
+    s.played++;
   }
 
   private applyTiebreakers(standings: Standing[], matches: MatchResult[]): Standing[] {

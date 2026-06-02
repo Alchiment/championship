@@ -138,4 +138,98 @@ describe("CalculateStandings", () => {
     expect(standings.every((s) => s.goalDifference === 0)).toBe(true);
     expect(standings.every((s) => s.goalsFor === 1)).toBe(true);
   });
+
+  it("excludes NO_SHOW matches from standings calculations", async () => {
+    const teamRepo = {
+      findByTournament: vi.fn().mockResolvedValue([
+        makeTeam("a", "Team A"),
+        makeTeam("b", "Team B"),
+      ]),
+      findById: vi.fn(),
+      findActiveByTournament: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+    };
+
+    const noShowMatch = new Match({
+      id: "1",
+      round: 1,
+      phase: MatchPhase.LEAGUE,
+      status: MatchStatus.NO_SHOW,
+      homeScore: null,
+      awayScore: null,
+      tournamentId: "t1",
+      homeTeamId: "a",
+      awayTeamId: "b",
+    });
+
+    const matchRepo = {
+      findByTournament: vi.fn().mockResolvedValue([noShowMatch]),
+      findById: vi.fn(),
+      findByRound: vi.fn(),
+      findScheduledByTeam: vi.fn(),
+      create: vi.fn(),
+      createMany: vi.fn(),
+      update: vi.fn(),
+      updateMany: vi.fn(),
+    };
+
+    const useCase = new CalculateStandings(teamRepo, matchRepo);
+    const standings = await useCase.execute("t1");
+
+    expect(standings).toHaveLength(2);
+    expect(standings[0].played).toBe(1);
+    expect(standings[0].points).toBe(0);
+    expect(standings[0].goalsFor).toBe(0);
+    expect(standings[0].goalsAgainst).toBe(0);
+    expect(standings[1].played).toBe(1);
+    expect(standings[1].points).toBe(0);
+    expect(standings[1].goalsFor).toBe(0);
+    expect(standings[1].goalsAgainst).toBe(0);
+  });
+
+  it("excludes NO_SHOW matches from head-to-head tiebreaker", async () => {
+    const teamRepo = {
+      findByTournament: vi.fn().mockResolvedValue([
+        makeTeam("a", "Team A"),
+        makeTeam("b", "Team B"),
+      ]),
+      findById: vi.fn(),
+      findActiveByTournament: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+    };
+
+    const noShowMatch = new Match({
+      id: "1",
+      round: 1,
+      phase: MatchPhase.LEAGUE,
+      status: MatchStatus.NO_SHOW,
+      homeScore: null,
+      awayScore: null,
+      tournamentId: "t1",
+      homeTeamId: "a",
+      awayTeamId: "b",
+    });
+
+    const completedMatch = makeMatch("2", "a", "b", 1, 0);
+
+    const matchRepo = {
+      findByTournament: vi.fn().mockResolvedValue([noShowMatch, completedMatch]),
+      findById: vi.fn(),
+      findByRound: vi.fn(),
+      findScheduledByTeam: vi.fn(),
+      create: vi.fn(),
+      createMany: vi.fn(),
+      update: vi.fn(),
+      updateMany: vi.fn(),
+    };
+
+    const useCase = new CalculateStandings(teamRepo, matchRepo);
+    const standings = await useCase.execute("t1");
+
+    expect(standings[0].teamId).toBe("a");
+    expect(standings[0].points).toBe(3);
+    expect(standings[1].points).toBe(0);
+  });
 });

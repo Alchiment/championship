@@ -28,6 +28,8 @@ export function MatchCard({ match }: MatchCardProps) {
           <span className="text-xl font-bold text-accent">
             {match.homeScore} - {match.awayScore}
           </span>
+        ) : match.status === "NO_SHOW" ? (
+          <span className="text-sm font-bold text-red-400">No se presentaron</span>
         ) : match.status === "IN_PROGRESS" ? (
           <span className="text-emerald-400">
             <span className="mr-1 inline-block h-2 w-2 rounded-full bg-emerald-400" />
