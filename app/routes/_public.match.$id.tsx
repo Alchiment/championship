@@ -44,6 +44,8 @@ export default function MatchDetailPage() {
             <span className="text-4xl font-bold text-accent">
               {match.homeScore} - {match.awayScore}
             </span>
+          ) : match.status === "NO_SHOW" ? (
+            <span className="text-sm font-bold text-red-400">No se presentaron</span>
           ) : match.status === "IN_PROGRESS" ? (
             <span className="flex items-center gap-1.5 text-emerald-400">
               <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />

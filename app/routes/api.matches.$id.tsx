@@ -8,7 +8,16 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   if (request.method === "PATCH") {
     const body = await request.json();
-    const { homeScore, awayScore } = body;
+    const { homeScore, awayScore, noShow } = body;
+
+    if (noShow) {
+      const match = await prisma.match.update({
+        where: { id: params.id },
+        data: { status: "NO_SHOW", homeScore: null, awayScore: null },
+        include: { homeTeam: true, awayTeam: true },
+      });
+      return data(match);
+    }
 
     const match = await prisma.match.update({
       where: { id: params.id },

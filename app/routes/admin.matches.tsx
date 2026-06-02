@@ -1,6 +1,7 @@
 import { data, redirect } from "react-router";
 import { useLoaderData, Form, useNavigation } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import { useState } from "react";
 import { prisma } from "../infrastructure/database/client";
 import { requireAdmin } from "../utils/auth.server";
 
@@ -96,13 +97,21 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (intent === "record") {
     const matchId = formData.get("matchId") as string;
-    const homeScore = parseInt(formData.get("homeScore") as string);
-    const awayScore = parseInt(formData.get("awayScore") as string);
+    const noShow = formData.get("noShow") === "on";
 
-    await prisma.match.update({
-      where: { id: matchId },
-      data: { status: "COMPLETED", homeScore, awayScore },
-    });
+    if (noShow) {
+      await prisma.match.update({
+        where: { id: matchId },
+        data: { status: "NO_SHOW", homeScore: null, awayScore: null },
+      });
+    } else {
+      const homeScore = parseInt(formData.get("homeScore") as string);
+      const awayScore = parseInt(formData.get("awayScore") as string);
+      await prisma.match.update({
+        where: { id: matchId },
+        data: { status: "COMPLETED", homeScore, awayScore },
+      });
+    }
   }
 
   return redirect("/admin/matches");
@@ -112,6 +121,7 @@ export default function AdminMatches() {
   const { rounds, tournamentId } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+  const [noShowMatches, setNoShowMatches] = useState<Record<string, boolean>>({});
 
   return (
     <div>
@@ -149,24 +159,40 @@ export default function AdminMatches() {
                   <span className="font-bold text-accent">
                     {match.homeScore} - {match.awayScore}
                   </span>
+                ) : match.status === "NO_SHOW" ? (
+                  <span className="font-bold text-red-400">No se presentaron</span>
                 ) : (
                   <Form method="post" className="flex items-center gap-2">
                     <input type="hidden" name="intent" value="record" />
                     <input type="hidden" name="matchId" value={match.id} />
+                    <label className="flex items-center gap-1 text-xs text-muted cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="noShow"
+                        className="rounded border-default text-red-500 focus:ring-red-500"
+                        checked={!!noShowMatches[match.id]}
+                        onChange={(e) =>
+                          setNoShowMatches((prev) => ({ ...prev, [match.id]: e.target.checked }))
+                        }
+                      />
+                      No se presentaron
+                    </label>
                     <input
                       type="number"
                       name="homeScore"
-                      required
+                      required={!noShowMatches[match.id]}
                       min="0"
-                      className="w-16 rounded-lg border border-default bg-inset px-2 py-1.5 text-center text-primary focus:border-accent focus:ring-1 focus:ring-accent/50"
+                      className="w-16 rounded-lg border border-default bg-inset px-2 py-1.5 text-center text-primary focus:border-accent focus:ring-1 focus:ring-accent/50 disabled:opacity-50"
+                      disabled={!!noShowMatches[match.id]}
                     />
                     <span className="text-muted">-</span>
                     <input
                       type="number"
                       name="awayScore"
-                      required
+                      required={!noShowMatches[match.id]}
                       min="0"
-                      className="w-16 rounded-lg border border-default bg-inset px-2 py-1.5 text-center text-primary focus:border-accent focus:ring-1 focus:ring-accent/50"
+                      className="w-16 rounded-lg border border-default bg-inset px-2 py-1.5 text-center text-primary focus:border-accent focus:ring-1 focus:ring-accent/50 disabled:opacity-50"
+                      disabled={!!noShowMatches[match.id]}
                     />
                     <button
                       type="submit"

@@ -26,6 +26,7 @@ enum MatchStatus {
   SCHEDULED
   IN_PROGRESS
   COMPLETED
+  NO_SHOW
 }
 
 enum TeamStatus {

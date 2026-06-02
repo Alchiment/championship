@@ -13,6 +13,10 @@ export class RecordMatchResult {
       throw new ValidationError("Cannot modify forfeit match results");
     }
 
+    if (match.isNoShow()) {
+      throw new ValidationError("Cannot modify no-show match results");
+    }
+
     const updated = match.recordResult(homeScore, awayScore);
     return this.matchRepo.update(updated);
   }

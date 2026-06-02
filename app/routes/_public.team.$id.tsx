@@ -114,6 +114,8 @@ export default function TeamDetailPage() {
                     <span className="font-bold text-accent">
                       {match.homeScore} - {match.awayScore}
                     </span>
+                  ) : match.status === "NO_SHOW" ? (
+                    <span className="text-xs font-bold text-red-400">No se presentaron</span>
                   ) : (
                     <span className="text-sm text-secondary">vs</span>
                   )}
